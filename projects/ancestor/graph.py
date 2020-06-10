@@ -3,9 +3,11 @@ Simple graph implementation
 """
 from util import Stack, Queue  # These may come in handy
 
+
 class Graph:
 
     """Represent a graph as a dictionary of vertices mapping labels to edges."""
+
     def __init__(self):
         self.vertices = {}
 
@@ -39,7 +41,6 @@ class Graph:
         q = Queue()
         q.enqueue(starting_vertex)
 
-
         # Keep track of visited vertices
         visited = set()
 
@@ -70,10 +71,8 @@ class Graph:
         s = Stack()
         s.push(starting_vertex)
 
-
         # Track visited
         visited = set()
-
 
         # While stack is not empty
         while s.size() > 0:
@@ -88,12 +87,7 @@ class Graph:
                 for next_vert in self.get_neighbors(v):
                     s.push(next_vert)
 
-            
-
-
-
-
-    def dft_recursive(self, starting_vertex, visited = None):
+    def dft_recursive(self, starting_vertex, visited=None):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
@@ -109,9 +103,6 @@ class Graph:
 
             for next_node in self.get_neighbors(starting_vertex):
                 self.dft_recursive(next_node, visited)
-            
-
-                
 
     def bfs(self, starting_vertex, destination_vertex):
         """
@@ -162,11 +153,9 @@ class Graph:
         path.reverse()
         return path
 
-            # print(self.vertices[i])
+        # print(self.vertices[i])
 
-
-
-    def dfs_recursive(self, starting_vertex, destination_vertex, visited = None):
+    def dfs_recursive(self, starting_vertex, destination_vertex, visited=None, path=[]):
         """
         Return a list containing a path from
         starting_vertex to destination_vertex in
@@ -174,24 +163,22 @@ class Graph:
 
         This should be done using recursion.
         """
-        index = destination_vertex
-        linkTo = destination_vertex
-        path = []
-        path.append(destination_vertex)
-        done = False
-        while done == False:
-            if linkTo in self.vertices[index]:
-                path.append(index)
-                linkTo = index
-                index -= 1
-            else:
-                index -= 1
-            if index < starting_vertex:
-                done = True
+        if visited == None:
+            visited = set()
 
-        path.reverse()
-        return path
-        # return self.dft_recursive()
+        if starting_vertex == destination_vertex:
+            return path
+
+        if starting_vertex not in visited:
+            print(starting_vertex)
+            visited.add(starting_vertex)
+
+
+            for next_node in self.get_neighbors(starting_vertex):
+                pathCopy = list(path)
+                pathCopy.append(next_node)
+                self.dfs_recursive(starting_vertex, next_node, visited, path)
+
 
 if __name__ == '__main__':
     graph = Graph()  # Instantiate your graph
@@ -245,7 +232,7 @@ if __name__ == '__main__':
         1, 2, 4, 6, 3, 5, 7
     '''
     graph.dft(1)
-    
+
     graph.dft_recursive(1)
 
     '''
@@ -263,4 +250,5 @@ if __name__ == '__main__':
 
     print("I'm boutta DFS")
     print(graph.dfs(1, 6))
+    print("I'm boutta depth first recursively")
     print(graph.dfs_recursive(1, 6))
